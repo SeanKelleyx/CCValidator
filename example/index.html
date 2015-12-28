@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<style type="text/css">
+			.error {
+				color:red;
+				border:5px solid red;
+			}
+			.valid {
+				color:green;
+				border:5px solid green;
+			}
+		</style>
 		<title>ccValidator Example</title>
 	</head>
 	<body>
@@ -20,6 +30,12 @@
 			$("input,textarea").each(function(){
 				$(this).after("<span>CC is valid: "+$(this).validCC()+"</span>");
 			});
+
+			$("input").validCC({on:"focus", success:function(){
+				$(this).removeClass("error").addClass("valid");
+			}, failure:function(){
+				$(this).removeClass("valid").addClass("error");
+			}});
 		</script>
 	</body>
 </html>

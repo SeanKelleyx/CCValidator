@@ -8,6 +8,16 @@ Usage
 
 Available Options
 -----------------
+**on** - string (event)  
+pass in to run validation on the event passed in  
+you can also include callbacks for success and failure  
+
+**success** - function - defaults to function(){} - must be used with **on**  
+Pass in a callback to run if card number is valid.
+
+**failure** - function - defaults to function(){} - must be used with **on**   
+Pass in a callback to run if card number is invalid.
+
 **separator** - boolean - defaults to false.  
 Set to true if your input field includes dashes, "-", as separators.
 

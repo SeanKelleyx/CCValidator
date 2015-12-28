@@ -1,3 +1,3 @@
 CCValidator
 ===========
-'ccValidator' is a simple jQuery credit card number validator.
+`ccValidator` is a simple jQuery credit card number validator.

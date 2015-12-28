@@ -14,6 +14,7 @@ Set to true if your input field includes dashes, "-", as separators.
 **acceptedCards** - array - default is all cards.  
 If you only want to validate specific cards pass them in as an array.  
 Valid card strings:
+
 	* "amex" - (American Express)
 	* "dinersCart" - (Diners Club - Carte Blanche)
 	* "dinersInt" - (Diners Club - International)

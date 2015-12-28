@@ -9,9 +9,8 @@
 		function check($input){
 			var ccNumber = removeSeparator($input.val());
 			if($.isNumeric(ccNumber)){
-				var lengthCheck = withinLengthParameters(ccNumber, min, max);
-
-				return lengthCheck;
+				return withinLengthParameters(ccNumber, min, max) && 
+				       luhnCheck(ccNumber);
 			}
 			return false;
 		}
@@ -28,7 +27,22 @@
 		}
 
 		function luhnCheck(ccNumber){
-
+			var ccNumberArray = ccNumber.split('').map(Number);
+			var lastDigit = ccNumberArray.pop();
+			ccNumberArray.reverse();
+			for (var i=0; i < ccNumberArray.length; i++){
+				if (i%2 === 0){
+					ccNumberArray[i] = ccNumberArray[i] * 2;
+					if (ccNumberArray[i] > 9){
+						ccNumberArray[i] = ccNumberArray[i] - 9;
+					}
+				}
+			}
+			var total = 0;
+			for (var digit in ccNumberArray){
+				total += ccNumberArray[digit];
+			}
+			return (total + lastDigit) % 10 === 0;
 		}
 		return check($input);
 	};

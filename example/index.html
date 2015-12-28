@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>validEmail Example</title>
+	</head>
+	<body>
+		<h1>Example on how to use ccValidator</h1>
+		<h2>Valid</h2>
+		<p>
+			<input type="text" value="4024007176186426">
+		</p>
+		<h2>Invalid</h2>
+		<p>
+			<input type="text" value="12345">
+		</p>
+
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script type="text/javascript" src="../ccValidator.js"></script>
+		<script type="text/javascript">
+			$("input,textarea").each(function(){
+				$(this).after("<span>CC is valid: "+$(this).validCC()+"</span>");
+			});
+		</script>
+	</body>
+</html>

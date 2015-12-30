@@ -15,20 +15,30 @@
 	</head>
 	<body>
 		<h1>Example on how to use ccValidator</h1>
-		<h2>Valid</h2>
+		<h2>Getting True/false</h2>
 		<p>
-			<input type="text" value="4024007176186426">
+			<input class="default" type="text" value="4024007176186426">
 		</p>
-		<h2>Invalid</h2>
 		<p>
-			<input type="text" value="12345">
+			<input class="default" type="text" value="12345">
+		</p>
+		<h2>Getting card type</h2>
+		<p>
+			<input class="type" type="text" value="4024007176186426">
+		</p>
+		<p>
+			<input class="type" type="text" value="12345">
 		</p>
 
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 		<script type="text/javascript" src="../ccValidator.js"></script>
 		<script type="text/javascript">
-			$("input,textarea").each(function(){
+			$("input.default").each(function(){
 				$(this).after("<span>CC is valid: "+$(this).validCC()+"</span>");
+			});
+
+			$("input.type").each(function(){
+				$(this).after("<span>CC is valid: "+$(this).validCC({getCardType: true})+"</span>");
 			});
 
 			$("input").validCC({on:"focus", success:function(){

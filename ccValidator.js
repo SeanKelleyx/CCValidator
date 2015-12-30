@@ -1,19 +1,18 @@
 (function($){
 	$.fn.validCC = function(options){
 		//create object of card names and patterns
-		var cardPrefixesAndLengths = $.parseJSON('{"amex":{"startsWith":["34","37"],"min":15,"max":15},"dinersCart":{"startsWith":["300", "301", "302", "303", "304", "305"],"min":14,"max":14},"dinersInt":{"startsWith":["36"],"min":14,"max":14},"dinersUS":{"startsWith":["54"],"min":16,"max":16},"discover":{"startsWith":["6011", "6221", "6222", "6223", "6224", "6225", "6226", "6227", "6228", "6229", "644", "645", "646", "647", "648", "649", "65"],"min":16,"max":16},"insta":{"startsWith":["637", "638", "639"],"min":16,"max":16},"jcb":{"startsWith":["352","353", "354", "355", "356", "357", "358"],"min":16,"max":16},"laser":{"startsWith":["6304", "6706", "6771", "6709"],"min":16,"max":19},"maestro":{"startsWith":["5018", "5020", "5038", "5893", "6304", "6759", "6761", "6762", "6763"],"min":16,"max":19},"master":{"startsWith":["51", "52", "53", "54", "55"],"min":16,"max":19},"visa":{"startsWith":["4"],"min":13,"max":16},"visae":{"startsWith":["4026", "417500", "4508", "4844", "4913", "4917"],"min":16,"max":16}}');
+		var cardPrefixesAndLengths = $.parseJSON('{"amex":{"startsWith":["34","37"],"min":15,"max":15},"dinersCart":{"startsWith":["300", "301", "302", "303", "304", "305"],"min":14,"max":14},"dinersInt":{"startsWith":["36"],"min":14,"max":14},"dinersUS":{"startsWith":["54"],"min":16,"max":16},"discover":{"startsWith":["6011", "6221", "6222", "6223", "6224", "6225", "6226", "6227", "6228", "6229", "644", "645", "646", "647", "648", "649", "65"],"min":16,"max":16},"insta":{"startsWith":["637", "638", "639"],"min":16,"max":16},"jcb":{"startsWith":["352","353", "354", "355", "356", "357", "358"],"min":16,"max":16},"laser":{"startsWith":["6304", "6706", "6771", "6709"],"min":16,"max":19},"maestro":{"startsWith":["5018", "5020", "5038", "5893", "6759", "6761", "6762", "6763"],"min":16,"max":19},"master":{"startsWith":["51", "52", "53", "54", "55"],"min":16,"max":19},"visae":{"startsWith":["4026", "417500", "4508", "4844", "4913", "4917"],"min":16,"max":16},"visa":{"startsWith":["4"],"min":13,"max":16}}');
 		
 		//set options to {} if none are passed in 
 		options = options || {};
 		var on = options.on;
-		var separator = options.separator ? "-" : undefined;
 		var allowedCards = options.separator || Object.keys(cardPrefixesAndLengths);
 		var success = options.success || (function(){});
   		var failure = options.failure || (function(){});
-
+  		var getCardType = options.getCardType || false;
 		var cardType = "unknown";
-		var min, max;
-		var prefixes = [];
+		var minLength, maxLength;
+		var allPrefixes = [];
 		setCardParameters();
 		
 		var $input = $(this);
@@ -32,50 +31,25 @@
 			for(var i in remove){
 				allowedCards.splice(remove[i], 1);
 			}
-			var mins = [];
-			var maxs = [];
-			for(var i in allowedCards){
-				var card = cardPrefixesAndLengths[allowedCards[i]];
-				mins.push(card.min);
-				maxs.push(card.max);
-				prefixes = prefixes.concat(card.startsWith);
-			}
-			min = Math.min.apply(Math, mins);
-			max = Math.max.apply(Math, maxs);
+			$.each(cardPrefixesAndLengths, function(key, value){
+				allPrefixes = allPrefixes.concat(value.startsWith);
+			});
 		}
 		
 		function checkCard($input){
-			var ccNumber = removeSeparator($input.val());
+			var ccNumber = $input.val();
 			if($.isNumeric(ccNumber)){
-				return withinLengthParameters(ccNumber) && 
-					   checkPrefixes(ccNumber);
-				       luhnCheck(ccNumber);
+				var cType = populateCardTypeFromCardNumber(ccNumber);
+				if (allowedCards.indexOf(cType) > -1 && withinLengthParameters(ccNumber)){
+					return luhnCheck(ccNumber);
+				}
 			}
 			return false;
-		}
-
-		//if separator is passed in make sure to remove it from card number
-		function removeSeparator(ccNumber){
-			if(separator != undefined ){
-				ccNumber = ccNumber.trim().split(separator).join();
-			}
-			return ccNumber;
 		}
 
 		//make sure card number fits the length profile for an accepted card
 		function withinLengthParameters(ccNumber){
 			return ccNumber.length >= min && ccNumber.length <= max;
-		}
-
-		//check card number against allowed prefixes
-		function checkPrefixes(ccNumber){
-			for(var i in prefixes){
-				if(ccNumber.indexOf(prefixes[i]) === 0){
-					getCardType(prefixes[i])
-					return true;
-				}
-			}
-			return false;
 		}
 
 		//get card type from prefix
@@ -85,7 +59,18 @@
 					cardType = key;
 				}
 			});
+			return cardType;
 		}
+
+		//get card type from card number
+		function populateCardTypeFromCardNumber(ccNumber){
+			for(var i in allPrefixes){
+				if(ccNumber.indexOf(allPrefixes[i]) === 0){
+					return getCardType(allPrefixes[i]);
+				}
+			}
+			return cardType;
+		} 
 
 		//run card through the Luhn algorithm to verify authenticity
 		function luhnCheck(ccNumber){
@@ -115,6 +100,11 @@
 			$input.bind(on, function(){
 				callbacks($(this));
 			});
+		}
+
+		if(getCardType){
+			checkCard($input);
+			return cardType;
 		}
 		return checkCard($input);
 	};

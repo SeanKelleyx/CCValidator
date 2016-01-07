@@ -1,7 +1,7 @@
 (function($){
 	'use strict';
 	var cardPrefixesAndLengths = $.parseJSON('{"amex":{"startsWith":["34","37"],"min":15,"max":15},"dinersCart":{"startsWith":["300", "301", "302", "303", "304", "305"],"min":14,"max":14},"dinersInt":{"startsWith":["36"],"min":14,"max":14},"dinersUS":{"startsWith":["54"],"min":16,"max":16},"discover":{"startsWith":["6011", "6221", "6222", "6223", "6224", "6225", "6226", "6227", "6228", "6229", "644", "645", "646", "647", "648", "649", "65"],"min":16,"max":16},"insta":{"startsWith":["637", "638", "639"],"min":16,"max":16},"jcb":{"startsWith":["352","353", "354", "355", "356", "357", "358"],"min":16,"max":16},"laser":{"startsWith":["6304", "6706", "6771", "6709"],"min":16,"max":19},"maestro":{"startsWith":["5018", "5020", "5038", "5893", "6759", "6761", "6762", "6763"],"min":16,"max":19},"master":{"startsWith":["51", "52", "53", "54", "55"],"min":16,"max":19},"visae":{"startsWith":["4026", "417500", "4508", "4844", "4913", "4917"],"min":16,"max":16},"visa":{"startsWith":["4"],"min":13,"max":16}}');
-	var cardType = "unknown";
+	var unknownCardType = "unknown";
 	var minLength, maxLength;
 	var allPrefixes = [];
 	$.each(cardPrefixesAndLengths, function(key, value){
@@ -10,22 +10,24 @@
 
 	//get card type from prefix
 	function _getCardTypeFromPrefix(prefix){
+		var cType = unknownCardType;
 		$.each(cardPrefixesAndLengths, function(key, value){
 			if(value.startsWith.indexOf(prefix) > -1){
-				cardType = key;
+				cType = key;
 			}
 		});
-		return cardType;
+		return cType;
 	}
 
 	//get card type from card number
 	function _populateCardTypeFromCardNumber(ccNumber){
+		var cType = unknownCardType;
 		for(var i in allPrefixes){
 			if(ccNumber.indexOf(allPrefixes[i]) === 0){
 				return _getCardTypeFromPrefix(allPrefixes[i]);
 			}
 		}
-		return cardType;
+		return cType;
 	} 
 
 	//run card through the Luhn algorithm to verify authenticity
@@ -53,35 +55,33 @@
 		return ccNumber.length >= cardPrefixesAndLengths[cType].min && ccNumber.length <= cardPrefixesAndLengths[cType].max;
 	}
 
+	//remove bad card names
+	function _cleanAllowedCards(allowedCards){
+		var allKeys = Object.keys(cardPrefixesAndLengths);
+		var remove = [];
+		for(var i in allowedCards){
+			if (allKeys.indexOf(allowedCards[i]) === -1 ){
+				remove.push(i);
+			}
+		}
+		remove.reverse();
+		for(var i in remove){
+			allowedCards.splice(remove[i], 1);
+		}
+		return allowedCards;
+	}
+
 	$.fn.validCC = function(options){
-		//create object of card names and patterns
-		cardType = "unknown";
 		//set options to {} if none are passed in 
 		options = options || {};
 		var on = options.on;
-		var allowedCards = options.separator || Object.keys(cardPrefixesAndLengths);
+		var allowedCards = options.acceptedCards || Object.keys(cardPrefixesAndLengths);
 		var success = options.success || (function(){});
 		var failure = options.failure || (function(){});
 		var getCardType = options.getCardType || false;		
-		setCardParameters();
+		allowedCards = _cleanAllowedCards(allowedCards);
 		
 		var $input = $(this);
-
-
-		//set parameters to fit allowed patterns and remove bad card names
-		function setCardParameters(){
-			var allKeys = Object.keys(cardPrefixesAndLengths);
-			var remove = [];
-			for(var i in allowedCards){
-				if (allKeys.indexOf(allowedCards[i]) === -1 ){
-					remove.push(i);
-				}
-			}
-			remove.reverse();
-			for(var i in remove){
-				allowedCards.splice(remove[i], 1);
-			}
-		}
 		
 		function checkCard($input){
 			var ccNumber = $input.val();
@@ -104,11 +104,28 @@
 			});
 		}
 
-		if(getCardType){
-			checkCard($input);
-			return cardType;
-		}
 		return checkCard($input);
+	};
+
+	$.fn.validLength = function(){
+		var $input = $(this);
+		var ccNumber = $input.val();
+		if($.isNumeric(ccNumber)){
+			var cType = _populateCardTypeFromCardNumber(ccNumber);
+			if (Object.keys(cardPrefixesAndLengths).indexOf(cType) > -1 && _withinLengthParameters(ccNumber, cType)){
+				return true;
+			}
+		}
+		return false;
+	};
+
+	$.fn.getCardType = function(){
+		var $input = $(this);
+		var ccNumber = $input.val();
+		if($.isNumeric(ccNumber)){
+			return _populateCardTypeFromCardNumber(ccNumber);
+		}
+		return 'unknown';
 	};
 
 })(jQuery);

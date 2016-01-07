@@ -35,17 +35,18 @@
 		<script type="text/javascript">
 			$("input.default").each(function(){
 				$(this).after("<span>CC is valid: "+$(this).validCC()+"</span>");
+				console.log($(this).validCC());
 			});
 
 			$("input.type").each(function(){
-				$(this).after("<span>CC is valid: "+$(this).validCC({getCardType: true})+"</span>");
+				$(this).after("<span>CC type is: "+$(this).validCC({getCardType: true})+"</span>");
 			});
 
-			$("input").validCC({on:"focus", success:function(){
+			$("input").validCC({on:"input focus", success:function(){
 				$(this).removeClass("error").addClass("valid");
 			}, failure:function(){
 				$(this).removeClass("valid").addClass("error");
 			}});
 		</script>
-	</body>
-</html>
+		</body>
+	</html>

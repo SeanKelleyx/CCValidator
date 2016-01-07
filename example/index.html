@@ -36,6 +36,13 @@
 		<p>
 			<input class="length" type="text" value="12345">
 		</p>
+		<h2>Passes the Luhn Algorithm</h2>
+		<p>
+			<input class="luhn" type="text" value="4024007176186426">
+		</p>
+		<p>
+			<input class="luhn" type="text" value="5024007176186426">
+		</p>
 
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 		<script type="text/javascript" src="../ccValidator.js"></script>
@@ -51,6 +58,10 @@
 
 			$("input.length").each(function(){
 				$(this).after("<span>CC length valid: "+$(this).validLength()+"</span>");
+			});
+
+			$("input.luhn").each(function(){
+				$(this).after("<span>CC Luhn check: "+$(this).luhnCheck()+"</span>");
 			});
 
 			$("input").validCC({on:"input focus", success:function(){

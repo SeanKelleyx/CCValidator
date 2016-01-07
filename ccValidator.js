@@ -125,7 +125,16 @@
 		if($.isNumeric(ccNumber)){
 			return _populateCardTypeFromCardNumber(ccNumber);
 		}
-		return 'unknown';
+		return unknownCardType;
+	};
+
+	$.fn.luhnCheck = function(){
+		var $input = $(this);
+		var ccNumber = $input.val();
+		if($.isNumeric(ccNumber)){
+			return _luhnCheck(ccNumber);
+		}
+		return false;
 	};
 
 })(jQuery);

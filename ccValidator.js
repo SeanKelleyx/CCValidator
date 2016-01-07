@@ -1,4 +1,5 @@
 (function($){
+	'use strict';
 	$.fn.validCC = function(options){
 		//create object of card names and patterns
 		var cardPrefixesAndLengths = $.parseJSON('{"amex":{"startsWith":["34","37"],"min":15,"max":15},"dinersCart":{"startsWith":["300", "301", "302", "303", "304", "305"],"min":14,"max":14},"dinersInt":{"startsWith":["36"],"min":14,"max":14},"dinersUS":{"startsWith":["54"],"min":16,"max":16},"discover":{"startsWith":["6011", "6221", "6222", "6223", "6224", "6225", "6226", "6227", "6228", "6229", "644", "645", "646", "647", "648", "649", "65"],"min":16,"max":16},"insta":{"startsWith":["637", "638", "639"],"min":16,"max":16},"jcb":{"startsWith":["352","353", "354", "355", "356", "357", "358"],"min":16,"max":16},"laser":{"startsWith":["6304", "6706", "6771", "6709"],"min":16,"max":19},"maestro":{"startsWith":["5018", "5020", "5038", "5893", "6759", "6761", "6762", "6763"],"min":16,"max":19},"master":{"startsWith":["51", "52", "53", "54", "55"],"min":16,"max":19},"visae":{"startsWith":["4026", "417500", "4508", "4844", "4913", "4917"],"min":16,"max":16},"visa":{"startsWith":["4"],"min":13,"max":16}}');
@@ -8,8 +9,8 @@
 		var on = options.on;
 		var allowedCards = options.separator || Object.keys(cardPrefixesAndLengths);
 		var success = options.success || (function(){});
-  		var failure = options.failure || (function(){});
-  		var getCardType = options.getCardType || false;
+		var failure = options.failure || (function(){});
+		var getCardType = options.getCardType || false;
 		var cardType = "unknown";
 		var minLength, maxLength;
 		var allPrefixes = [];
@@ -40,7 +41,7 @@
 			var ccNumber = $input.val();
 			if($.isNumeric(ccNumber)){
 				var cType = populateCardTypeFromCardNumber(ccNumber);
-				if (allowedCards.indexOf(cType) > -1 && withinLengthParameters(ccNumber)){
+				if (allowedCards.indexOf(cType) > -1 && withinLengthParameters(ccNumber, cType)){
 					return luhnCheck(ccNumber);
 				}
 			}
@@ -48,12 +49,12 @@
 		}
 
 		//make sure card number fits the length profile for an accepted card
-		function withinLengthParameters(ccNumber){
-			return ccNumber.length >= min && ccNumber.length <= max;
+		function withinLengthParameters(ccNumber, cType){
+			return ccNumber.length >= cardPrefixesAndLengths[cType].min && ccNumber.length <= cardPrefixesAndLengths[cType].max;
 		}
 
 		//get card type from prefix
-		function getCardType(prefix){
+		function getCardTypeFromPrefix(prefix){
 			$.each(cardPrefixesAndLengths, function(key, value){
 				if(value.startsWith.indexOf(prefix) > -1){
 					cardType = key;
@@ -66,7 +67,7 @@
 		function populateCardTypeFromCardNumber(ccNumber){
 			for(var i in allPrefixes){
 				if(ccNumber.indexOf(allPrefixes[i]) === 0){
-					return getCardType(allPrefixes[i]);
+					return getCardTypeFromPrefix(allPrefixes[i]);
 				}
 			}
 			return cardType;

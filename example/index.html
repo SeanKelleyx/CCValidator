@@ -15,41 +15,75 @@
 	</head>
 	<body>
 		<h1>Example on how to use ccValidator</h1>
-		<h2>Getting True/false</h2>
-		<p>
-			<input class="default" type="text" value="4024007176186426">
-		</p>
-		<p>
-			<input class="default" type="text" value="12345">
-		</p>
-		<h2>Getting card type</h2>
-		<p>
-			<input class="type" type="text" value="4024007176186426">
-		</p>
-		<p>
-			<input class="type" type="text" value="12345">
-		</p>
-		<h2>Checking card length</h2>
-		<p>
-			<input class="length" type="text" value="4024007176186426">
-		</p>
-		<p>
-			<input class="length" type="text" value="12345">
-		</p>
+		<h2>Using validCC()</h2>
+			<h3>No Options</h3>
+			<p>
+				<input class="default" type="text" value="4024007176186426">
+			</p>
+			<p>
+				<input class="default" type="text" value="12345">
+			</p>
+			<h3>Using the "on", "success", and "failure" options</h3>
+			<p>These fields are set to validate on input and focus</p>
+			<p>
+				<input class="default-on" type="text" value="4024007176186426">
+			</p>
+			<p>
+				<input class="default-on" type="text" value="12345">
+			</p>
+			<h3>Using the "acceptedCards" option</h3>
+			<p>The first field allows visa, amex, master and discover. The second field allows only amex, master and discover.</p>
+			<p>
+				<input class="default-accepted1" type="text" value="4024007176186426">
+			</p>
+			<p>
+				<input class="default-accepted2" type="text" value="4024007176186426">
+			</p>
+		<h2>Using validLength()</h2>
+			<h3>No Options</h3>
+			<p>
+				<input class="length" type="text" value="4024007176186426">
+			</p>
+			<p>
+				<input class="length" type="text" value="343456789012345">
+			</p>
+			<h3>Using the "acceptedCards" option</h3>
+			<p>Both fields only allow amex</p>
+			<p>
+				<input class="length-accepted" type="text" value="4024007176186426">
+			</p>
+			<p>
+				<input class="length-accepted" type="text" value="343456789012345">
+			</p>
+
+		<h2>Using getCardType()</h2>
+			<p>
+				<input class="type" type="text" value="4024007176186426">
+			</p>
+			<p>
+				<input class="type" type="text" value="12345">
+			</p>
 		<h2>Passes the Luhn Algorithm</h2>
-		<p>
-			<input class="luhn" type="text" value="4024007176186426">
-		</p>
-		<p>
-			<input class="luhn" type="text" value="5024007176186426">
-		</p>
+			<p>
+				<input class="luhn" type="text" value="4024007176186426">
+			</p>
+			<p>
+				<input class="luhn" type="text" value="5024007176186426">
+			</p>
 
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 		<script type="text/javascript" src="../ccValidator.js"></script>
 		<script type="text/javascript">
 			$("input.default").each(function(){
 				$(this).after("<span>CC is valid: "+$(this).validCC()+"</span>");
-				console.log($(this).validCC());
+			});
+
+			$("input.default-accepted1").each(function(){
+				$(this).after("<span>CC is valid: "+$(this).validCC({acceptedCards:['visa','amex','master','discover']})+"</span>");
+			});
+
+			$("input.default-accepted2").each(function(){
+				$(this).after("<span>CC is valid: "+$(this).validCC({acceptedCards:['amex','master','discover']})+"</span>");
 			});
 
 			$("input.type").each(function(){
@@ -60,11 +94,15 @@
 				$(this).after("<span>CC length valid: "+$(this).validLength()+"</span>");
 			});
 
+			$("input.length-accepted").each(function(){
+				$(this).after("<span>CC length valid: "+$(this).validLength({acceptedCards:['amex']})+"</span>");
+			});
+
 			$("input.luhn").each(function(){
 				$(this).after("<span>CC Luhn check: "+$(this).luhnCheck()+"</span>");
 			});
 
-			$("input").validCC({on:"input focus", success:function(){
+			$("input.default-on").validCC({on:"input focus", success:function(){
 				$(this).removeClass("error").addClass("valid");
 			}, failure:function(){
 				$(this).removeClass("valid").addClass("error");

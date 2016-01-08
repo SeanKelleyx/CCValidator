@@ -40,5 +40,7 @@ Valid card strings:
 	* "laser" - (Laser)
 	* "maestro" - (Maestro)
 	* "master" - (Master Card)
+	* "solo" - (Solo)
+	* "unionpay" - (Unionpay)
 	* "visa" - (Visa)
 	* "visae" - (Visa Electron)

@@ -1,6 +1,91 @@
 (function($){
 	'use strict';
-	var cardPrefixesAndLengths = $.parseJSON('{"amex":{"startsWith":["34","37"],"min":15,"max":15},"dinersCart":{"startsWith":["300", "301", "302", "303", "304", "305"],"min":14,"max":14},"dinersInt":{"startsWith":["36"],"min":14,"max":14},"dinersUS":{"startsWith":["54"],"min":16,"max":16},"discover":{"startsWith":["6011", "6221", "6222", "6223", "6224", "6225", "6226", "6227", "6228", "6229", "644", "645", "646", "647", "648", "649", "65"],"min":16,"max":16},"insta":{"startsWith":["637", "638", "639"],"min":16,"max":16},"jcb":{"startsWith":["352","353", "354", "355", "356", "357", "358"],"min":16,"max":16},"laser":{"startsWith":["6304", "6706", "6771", "6709"],"min":16,"max":19},"maestro":{"startsWith":["5018", "5020", "5038", "5893", "6759", "6761", "6762", "6763"],"min":16,"max":19},"master":{"startsWith":["51", "52", "53", "54", "55"],"min":16,"max":19},"visae":{"startsWith":["4026", "417500", "4508", "4844", "4913", "4917"],"min":16,"max":16},"visa":{"startsWith":["4"],"min":13,"max":16}}');
+	var cardPrefixesAndLengths = { 
+		amex:{
+			ccvLen:4,
+			startsWith:["34","37"],
+			min:15,
+			max:15
+		},
+		dinersCart:{
+			ccvLen:4,
+			startsWith:["300", "301", "302", "303", "304", "305"],
+			min:14,
+			max:14
+		},
+		dinersInt:{
+			ccvLen:4,
+			startsWith:["36"],
+			min:14,
+			max:14
+		},
+		dinersUS:{
+			ccvLen:4,
+			startsWith:["54"],
+			min:16,
+			max:16
+		},
+		discover:{
+			ccvLen:3,
+			startsWith:['6011', '622126', '622127', '622128', '622129', '62213', '62214', '62215', '62216', '62217', '62218', '62219', '6222', '6223', '6224', '6225', '6226', '6227', '6228', '62290', '62291', '622920', '622921', '622922', '622923', '622924', '622925', '644', '645', '646', '647', '648', '649', '65'],
+			min:16,
+			max:16
+		},
+		insta:{
+			ccvLen:3,
+			startsWith:["637", "638", "639"],
+			min:16,
+			max:16
+		},
+		jcb:{
+			ccvLen:3,
+			startsWith:["352","353", "354", "355", "356", "357", "358"],
+			min:16,
+			max:16
+		},
+		laser:{
+			ccvLen:3,
+			startsWith:["6304", "6706", "6771", "6709"],
+			min:16,
+			max:19
+		},
+		maestro:{
+			ccvLen:3,
+			startsWith:['5018', '5020', '5038', '6304', '6759', '6761', '6762', '6763', '6764', '6765', '6766'],
+			min:16,
+			max:19
+		},
+		master:{
+			ccvLen:3,
+			startsWith:["51", "52", "53", "54", "55"],
+			min:16,
+			max:19
+		},
+		solo: {
+			ccvLen:3,
+            startsWith: ['6334', '6767'],
+            min:16,
+			max:19
+        },
+        UNIONPAY: {
+			ccvLen:3,
+            startsWith: ['622126', '622127', '622128', '622129', '62213', '62214', '62215', '62216', '62217', '62218', '62219', '6222', '6223', '6224', '6225', '6226', '6227', '6228', '62290', '62291', '622920', '622921', '622922', '622923', '622924', '622925'],
+            min:16,
+			max:19
+        },
+		visae:{
+			ccvLen:3,
+			startsWith:["4026", "417500", "4508", "4844", "4913", "4917"],
+			min:16,
+			max:16
+		},
+		visa:{
+			ccvLen:3,
+			startsWith:["4"],
+			min:13,
+			max:16
+		}
+	};
 	var unknownCardType = "unknown";
 	var minLength, maxLength;
 	var allPrefixes = [];
@@ -106,6 +191,42 @@
 
 		return checkCard($input);
 	};
+
+	$.fn.validCvv = function(options){
+		var $input = $(this);
+		//set options to {} if none are passed in 
+		options = options || {};
+		var cardType;
+		var $cardInput = options.cardInput || undefined;
+		var cvv = $input.val();
+		var validLength;
+		if(cardType != undefined){
+			validLength = cardPrefixesAndLengths(cardType).ccvLen;
+		}
+		if($.isNumeric(cvv)){
+			if($cardInput === undefined){
+				if(cardType === undefined){
+					if (/^[0-9]{3,4}$/.test(cvv)) {
+		                return true;
+		            }
+				}else{
+					var re = new RegExp('^[0-9]{'+validLength'}$');
+					if (re.test(cvv)){
+						return true;
+					}
+				}
+			}else{
+
+			}
+			return false;
+		}
+		if ($cardInput === undefined){
+			cardType = options.cardType || undefined;
+		}else{
+			v_populateCardTypeFromCardNumber(ccNumber)
+			cardType = options.cardType || undefined;
+		}
+	}
 
 	$.fn.validLength = function(options){
 		var $input = $(this);

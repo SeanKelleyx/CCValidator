@@ -109,6 +109,8 @@
 
 	$.fn.validLength = function(options){
 		var $input = $(this);
+		//set options to {} if none are passed in 
+		options = options || {};
 		var allowedCards = options.acceptedCards || Object.keys(cardPrefixesAndLengths);
 		allowedCards = _cleanAllowedCards(allowedCards);
 		var ccNumber = $input.val();

@@ -107,12 +107,14 @@
 		return checkCard($input);
 	};
 
-	$.fn.validLength = function(){
+	$.fn.validLength = function(options){
 		var $input = $(this);
+		var allowedCards = options.acceptedCards || Object.keys(cardPrefixesAndLengths);
+		allowedCards = _cleanAllowedCards(allowedCards);
 		var ccNumber = $input.val();
 		if($.isNumeric(ccNumber)){
 			var cType = _populateCardTypeFromCardNumber(ccNumber);
-			if (Object.keys(cardPrefixesAndLengths).indexOf(cType) > -1 && _withinLengthParameters(ccNumber, cType)){
+			if (allowedCards.indexOf(cType) > -1 && _withinLengthParameters(ccNumber, cType)){
 				return true;
 			}
 		}

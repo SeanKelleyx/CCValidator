@@ -196,36 +196,36 @@
 		var $input = $(this);
 		//set options to {} if none are passed in 
 		options = options || {};
-		var cardType;
+		var cardType = options.cardType || undefined;
 		var $cardInput = options.cardInput || undefined;
 		var cvv = $input.val();
 		var validLength;
-		if(cardType != undefined){
-			validLength = cardPrefixesAndLengths(cardType).ccvLen;
-		}
+		var hasCardInput = $cardInput != undefined;
+		var hasCardType = cardType != undefined;
+
 		if($.isNumeric(cvv)){
-			if($cardInput === undefined){
-				if(cardType === undefined){
-					if (/^[0-9]{3,4}$/.test(cvv)) {
-		                return true;
-		            }
-				}else{
-					var re = new RegExp('^[0-9]{'+validLength'}$');
-					if (re.test(cvv)){
-						return true;
+			if(hasCardType){
+				validLength = cardPrefixesAndLengths[cardType].ccvLen;
+				var re = new RegExp('^[0-9]{'+validLength+'}$');
+				return re.test(cvv);
+			}else if(hasCardInput){
+				var ccNumber = $cardInput.value;
+				if($.isNumeric(ccNumber)){
+					var cType = _populateCardTypeFromCardNumber(ccNumber);
+					if(cType==="unknown"){
+						return false;
+					}else{
+						validLength = cardPrefixesAndLengths[cType].ccvLen;
+						var re = new RegExp('^[0-9]{'+validLength+'}$');
+						return re.test(cvv);
 					}
 				}
-			}else{
-
-			}
-			return false;
+	        }
+	        if (/^[0-9]{3,4}$/.test(cvv)) {
+                return true;
+            }
 		}
-		if ($cardInput === undefined){
-			cardType = options.cardType || undefined;
-		}else{
-			v_populateCardTypeFromCardNumber(ccNumber)
-			cardType = options.cardType || undefined;
-		}
+		return false;
 	}
 
 	$.fn.validLength = function(options){

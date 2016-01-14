@@ -70,6 +70,35 @@
 			<p>
 				<input class="luhn" type="text" value="5024007176186426">
 			</p>
+		<h2>Has Valid CVV</h2>
+			<h3>No Options</h3>
+			<p>
+				<input class="cvv" type="text" value="2435">
+			</p>
+			<p>
+				<input class="cvv" type="text" value="435">
+			</p>
+			<p>
+				<input class="cvv" type="text" value="43345435">
+			</p>
+			<h3>Using cardType</h3>
+			<p>cardType is Visa</p>
+			<p>
+				<input class="cvvCardType" type="text" value="2435">
+			</p>
+			<p>
+				<input class="cvvCardType" type="text" value="435">
+			</p>
+			<h3>Using cardInput</h3>
+			<p>cardInput is first followed by cvv</p>
+			<p>
+				<input id="ccFieldOne" type="text" value="4024007176186426">
+				<input id="cvvFieldOne" class="cvvCardInput" type="text" value="2435">
+			</p>
+			<p>
+				<input id="ccFieldTwo" type="text" value="4024007176186426">
+				<input id="cvvFieldTwo" class="cvvCardInput" type="text" value="235">
+			</p>
 
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 		<script type="text/javascript" src="../ccValidator.js"></script>
@@ -100,6 +129,21 @@
 
 			$("input.luhn").each(function(){
 				$(this).after("<span>CC Luhn check: "+$(this).luhnCheck()+"</span>");
+			});
+
+			$("input.cvv").each(function(){
+				$(this).after("<span>CVV valid: "+$(this).validCvv()+"</span>");
+			});
+
+			$("input.cvvCardType").each(function(){
+				$(this).after("<span>CVV valid: "+$(this).validCvv({cardType: "visa"})+"</span>");
+			});
+
+			$("#cvvFieldOne").each(function(){
+				$(this).after("<span>CVV valid: "+$(this).validCvv({cardInput: $("#ccFieldOne")[0]})+"</span>");
+			});
+			$("#cvvFieldTwo").each(function(){
+				$(this).after("<span>CVV valid: "+$(this).validCvv({cardInput: $("#ccFieldTwo")[0]})+"</span>");
 			});
 
 			$("input.default-on").validCC({on:"input focus", success:function(){

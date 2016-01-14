@@ -13,6 +13,8 @@ Usage
 
 `luhnCheck()` called on te input for the credit card number. Returns true/false if the card number passes the Luhn Algorithm. Accepts no options.
 
+`validCvv()` called on the input for the cvv number. Returns true/false if the ccv is valid length. Accepts options: cardType or cardInput. 
+
 
 ### Options ###
  
@@ -44,3 +46,9 @@ Valid card strings:
 	* "unionpay" - (Unionpay)
 	* "visa" - (Visa)
 	* "visae" - (Visa Electron)
+
+**cardType** - string  - defaults to undefined
+Pass in to validCvv() to validate the card specific CVV length.  
+
+**cardInput** - element - defaults to undefined
+Pass in to validCvv() to validate the card specific CVV length based on the card number value of the input.

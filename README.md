@@ -47,8 +47,8 @@ Valid card strings:
 	* "visa" - (Visa)
 	* "visae" - (Visa Electron)
 
-**cardType** - string  - defaults to undefined
+**cardType** - string  - defaults to empty string
 Pass in to validCvv() to validate the card specific CVV length.  
 
-**cardInput** - element - defaults to undefined
+**cardInput** - element - defaults to empty string
 Pass in to validCvv() to validate the card specific CVV length based on the card number value of the input.

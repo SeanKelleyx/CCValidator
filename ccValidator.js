@@ -1,4 +1,4 @@
-(function($){
+(function($, window, undefined){
 	'use strict';
 	var cardPrefixesAndLengths = { 
 		amex:{
@@ -156,15 +156,15 @@
 		return allowedCards;
 	}
 
-	$.fn.validCC = function(options){
-		//set options to {} if none are passed in 
-		options = options || {};
-		var on = options.on;
-		var allowedCards = options.acceptedCards || Object.keys(cardPrefixesAndLengths);
-		var success = options.success || (function(){});
-		var failure = options.failure || (function(){});
-		var getCardType = options.getCardType || false;		
-		allowedCards = _cleanAllowedCards(allowedCards);
+	$.fn.validCC = function(opts){
+		var defaults = {
+			on: false,
+			acceptedCards: Object.keys(cardPrefixesAndLengths),
+			success: (function(){}),
+			failure: (function(){}),
+		}
+		var options = $.extend(defaults, opts || {});
+		var allowedCards = _cleanAllowedCards(options.acceptedCards);
 		
 		var $input = $(this);
 		
@@ -180,11 +180,11 @@
 		}
 
 		function callbacks($input){
-			checkCard($input) ? success.call($input.get(0)) : failure.call($input.get(0));
+			checkCard($input) ? options.success.call($input.get(0)) : options.failure.call($input.get(0));
 		}
 
-		if(typeof on === "string"){
-			$input.bind(on, function(){
+		if(typeof options.on === "string"){
+			$input.bind(options.on, function(){
 				callbacks($(this));
 			});
 		}
@@ -192,24 +192,25 @@
 		return checkCard($input);
 	};
 
-	$.fn.validCvv = function(options){
+	$.fn.validCvv = function(opts){
+		var defaults = {
+			cardType: "",
+			cardInput: ""
+		}
+		var options = $.extend(defaults, opts || {});
 		var $input = $(this);
-		//set options to {} if none are passed in 
-		options = options || {};
-		var cardType = options.cardType || undefined;
-		var $cardInput = options.cardInput || undefined;
 		var cvv = $input.val();
 		var validLength;
-		var hasCardInput = $cardInput != undefined;
-		var hasCardType = cardType != undefined;
+		var hasCardInput = options.cardInput != "";
+		var hasCardType = options.cardType != "";
 
 		if($.isNumeric(cvv)){
 			if(hasCardType){
-				validLength = cardPrefixesAndLengths[cardType].ccvLen;
+				validLength = cardPrefixesAndLengths[options.cardType].ccvLen;
 				var re = new RegExp('^[0-9]{'+validLength+'}$');
 				return re.test(cvv);
 			}else if(hasCardInput){
-				var ccNumber = $cardInput.value;
+				var ccNumber = options.cardInput.value;
 				if($.isNumeric(ccNumber)){
 					var cType = _populateCardTypeFromCardNumber(ccNumber);
 					if(cType==="unknown"){
@@ -228,12 +229,13 @@
 		return false;
 	}
 
-	$.fn.validLength = function(options){
+	$.fn.validLength = function(opts){
+		var defaults = {
+			acceptedCards: Object.keys(cardPrefixesAndLengths)
+		}
+		var options = $.extend(defaults, opts || {});
 		var $input = $(this);
-		//set options to {} if none are passed in 
-		options = options || {};
-		var allowedCards = options.acceptedCards || Object.keys(cardPrefixesAndLengths);
-		allowedCards = _cleanAllowedCards(allowedCards);
+		var allowedCards = _cleanAllowedCards(options.acceptedCards);
 		var ccNumber = $input.val();
 		if($.isNumeric(ccNumber)){
 			var cType = _populateCardTypeFromCardNumber(ccNumber);
@@ -262,6 +264,6 @@
 		return false;
 	};
 
-})(jQuery);
+})(jQuery, window);
 
 

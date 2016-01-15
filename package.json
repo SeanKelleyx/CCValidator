@@ -1,0 +1,28 @@
+{
+  "name": "ccvalidator",
+  "version": "1.0.0",
+  "description": "jquery plugin for client side credit card validation",
+  "main": "ccValidator.js",
+  "directories": {
+    "example": "example"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SeanKelleyx/CCValidator.git"
+  },
+  "keywords": [
+    "jquery-plugin",
+    "ecosystem:jquery",
+    "validation",
+    "credit",
+    "card",
+    "client",
+    "side"
+  ],
+  "author": "Sean Kelley",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SeanKelleyx/CCValidator/issues"
+  },
+  "homepage": "https://github.com/SeanKelleyx/CCValidator#readme",
+}

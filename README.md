@@ -16,7 +16,8 @@ Usage
 `validCvv()` called on the input for the cvv number. Returns true/false if the ccv is valid length. Accepts options: cardType or cardInput. 
 
 
-### Options ###
+Options
+-------
  
 **on** - string (event)  
 pass in to run validation on the event passed in  
@@ -52,3 +53,8 @@ Pass in to validCvv() to validate the card specific CVV length.
 
 **cardInput** - element - defaults to empty string
 Pass in to validCvv() to validate the card specific CVV length based on the card number value of the input.
+
+jQuery versions
+---------------
+
+ccValidator works with 1.7.0 + 

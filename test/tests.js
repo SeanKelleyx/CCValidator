@@ -101,4 +101,16 @@
 		$input.val("36951285762086");
 		assert.equal("dinersInt", $input.getCardType());
 	});
+	QUnit.test("test luhnCheck() fail", function(assert){
+		$input.val("4024007160979942");
+		assert.equal(false, $input.luhnCheck());
+	});
+	QUnit.test("test luhnCheck() pass", function(assert){
+		$input.val("4024007160979943");
+		assert.equal(true, $input.luhnCheck());
+	});
+	QUnit.test("test luhnCheck() pass", function(assert){
+		$input.val("347425443456620");
+		assert.equal(true, $input.luhnCheck());
+	});
 })(jQuery);

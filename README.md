@@ -7,7 +7,7 @@ Usage
 -----
 `validCC()` called on the input for the credit card number. It checks for a numeric input, checks for a valid credit card type (based on the input value), a valid credit card length for the type, and ensures that the number passes the Luhn algorithm. Accepts options: on, success, failure, acceptedCards.  
 
-`validLength()` called on the input for the credit card number. Checks the given credit card number for a type and determines if based on the given type if the number is an acceptable length. Accepts options: acceptedCards.  
+`validLength()` called on the input for the credit card number. Checks the given credit card number for an acceptable length. Accepts options: acceptedCards.  
 
 `getCardType()` called on the input for the credit card number. Returns the string value of the credit card type (see acceptedCards option) or 'unknown' for not found. Accepts no options.  
 

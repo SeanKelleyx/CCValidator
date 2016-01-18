@@ -156,6 +156,28 @@
 		return allowedCards;
 	}
 
+	//get min from accepted cards
+	function _getMin(allowedCards){
+		var min = 100;
+		for(var i in allowedCards){
+			if(cardPrefixesAndLengths[allowedCards[i]].min < min){
+				min =  cardPrefixesAndLengths[allowedCards[i]].min;
+			}
+		}
+		return min;
+	}
+
+	//get max from accepted cards
+	function _getMax(allowedCards){
+		var max = 0;
+		for(var i in allowedCards){
+			if(cardPrefixesAndLengths[allowedCards[i]].max > max){
+				max =  cardPrefixesAndLengths[allowedCards[i]].max;
+			}
+		}
+		return max;
+	}
+
 	$.fn.validCC = function(opts){
 		var defaults = {
 			on: false,
@@ -238,10 +260,7 @@
 		var allowedCards = _cleanAllowedCards(options.acceptedCards);
 		var ccNumber = $input.val();
 		if($.isNumeric(ccNumber)){
-			var cType = _populateCardTypeFromCardNumber(ccNumber);
-			if (allowedCards.indexOf(cType) > -1 && _withinLengthParameters(ccNumber, cType)){
-				return true;
-			}
+			return (ccNumber.length >= _getMin(allowedCards) && ccNumber.length <= _getMax(allowedCards));
 		}
 		return false;
 	};

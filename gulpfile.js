@@ -12,6 +12,10 @@ gulp.task("minifyScript", function(){
 	.pipe(gulp.dest('./'));
 });
 
+gulp.task('watchFiles', function(){
+	gulp.watch('ccValidator.js', ['default']);
+});
+
 gulp.task('clean', function(){
 	del(['ccValidator.min.js']);
 });

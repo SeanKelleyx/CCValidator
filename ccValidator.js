@@ -182,11 +182,11 @@
 	function _getDate(year, month, day){
 		var date;
 		if(!(year===undefined)&&!(month===undefined)&&!(day===undefined)){
-			date = new Date(year.value, month.value - 1 , day);
+			date = new Date(year, month - 1 , day);
 		}else if(!(year===undefined)&&!(month===undefined)){
-			date = new Date(year.value, month.value - 1);
-		}else if(!year===undefined){
-			date = new Date(year.value);
+			date = new Date(year, month - 1);
+		}else if(!(year===undefined)){
+			date = new Date(year, 11);
 		}else{
 			date = new Date();
 			date.setDate(date.getDate() - 1);
@@ -306,7 +306,7 @@
 		return false;
 	};
 
-	$.fn.isDateValid = function(){
+	$.fn.isDateValid = function(opts){
 		var defaults = {
 			year: undefined,
 			month: undefined,

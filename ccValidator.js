@@ -178,6 +178,29 @@
 		return max;
 	}
 
+	//get date from options
+	function _getDate(year, month, day){
+		var date;
+		if(!(year===undefined)&&!(month===undefined)&&!(day===undefined)){
+			date = new Date(year.value, month.value - 1 , day);
+		}else if(!(year===undefined)&&!(month===undefined)){
+			date = new Date(year.value, month.value - 1);
+		}else if(!year===undefined){
+			date = new Date(year.value);
+		}else{
+			date = new Date();
+			date.setDate(date.getDate() - 1);
+		}
+		return date;
+	}
+
+	//return true if date is not expired
+	function _validDate(expDate){
+		var today = new Date();
+		return expDate >= today;
+	}
+
+
 	$.fn.validCC = function(opts){
 		var defaults = {
 			on: false,
@@ -281,6 +304,16 @@
 			return _luhnCheck(ccNumber);
 		}
 		return false;
+	};
+
+	$.fn.isDateValid = function(){
+		var defaults = {
+			year: undefined,
+			month: undefined,
+			day: undefined
+		}
+		var options = $.extend(defaults, opts || {});
+		return _validDate(_getDate(options.year,options.month,options.day));
 	};
 
 })(jQuery, window);

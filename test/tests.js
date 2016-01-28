@@ -113,4 +113,22 @@
 		$input.val("347425443456620");
 		assert.equal(true, $input.luhnCheck());
 	});
+	QUnit.test("test isDateValid() year month and day pass", function(assert){
+		assert.equal(true, $input.isDateValid({year:2020,month:10,day:27}));
+	});
+	QUnit.test("test isDateValid() year and monthpass", function(assert){
+		assert.equal(true, $input.isDateValid({year:2020,month:10}));
+	});
+	QUnit.test("test isDateValid() year pass", function(assert){
+		assert.equal(true, $input.isDateValid({year:2020}));
+	});
+	QUnit.test("test isDateValid() year month and day fail", function(assert){
+		assert.equal(false, $input.isDateValid({year:2015,month:10,day:27}));
+	});
+	QUnit.test("test isDateValid() year and month fail", function(assert){
+		assert.equal(false, $input.isDateValid({year:2015,month:10}));
+	});
+	QUnit.test("test isDateValid() year fail", function(assert){
+		assert.equal(false, $input.isDateValid({year:2015}));
+	});
 })(jQuery);

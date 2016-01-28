@@ -99,8 +99,36 @@
 				<input id="ccFieldTwo" type="text" value="4024007176186426">
 				<input id="cvvFieldTwo" class="cvvCardInput" type="text" value="235">
 			</p>
-
+		<h2>Has Valid Expiration Date</h2>
+			<h3>year month and day</h3>
+			<p>
+				<label>Year</label><input id="year1" type="text" value="2020">
+				<label>Month</label><input id="month1" type="text" value="10">
+				<label>Day</label><input id="day1" type="text" value="27">
+			</p>
+			<p>
+				<label>Year</label><input id="year2" type="text" value="2016">
+				<label>Month</label><input id="month2" type="text" value="1">
+				<label>Day</label><input id="day2" type="text" value="20">
+			</p>
+			<h3>year and month</h3>
+			<p>
+				<label>Year</label><input id="year3" type="text" value="2020">
+				<label>Month</label><input id="month3" type="text" value="10">
+			</p>
+			<p>
+				<label>Year</label><input id="year4" type="text" value="2016">
+				<label>Month</label><input id="month4" type="text" value="1">
+			</p>
+			<h3>year</h3>
+			<p>
+				<label>Year</label><input id="year5" type="text" value="2020">
+			</p>
+			<p>
+				<label>Year</label><input id="year6" type="text" value="2015">
+			</p>
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+		<!--<script type="text/javascript" src="../ccValidator.min.js"></script>-->
 		<script type="text/javascript" src="../ccValidator.js"></script>
 		<script type="text/javascript">
 			$("input.default").each(function(){
@@ -151,6 +179,24 @@
 			}, failure:function(){
 				$(this).removeClass("valid").addClass("error");
 			}});
+			$("#day1").each(function(){
+				$(this).after("<span>Date valid: "+$(this).isDateValid({year: Number($("#year1")[0].value), month: Number($("#month1")[0].value), day: Number($("#day1")[0].value)})+"</span>");
+			});
+			$("#day2").each(function(){
+				$(this).after("<span>Date valid: "+$(this).isDateValid({year: Number($("#year2")[0].value), month: Number($("#month2")[0].value), day: Number($("#day2")[0].value)})+"</span>");
+			});
+			$("#month3").each(function(){
+				$(this).after("<span>Date valid: "+$(this).isDateValid({year: Number($("#year3")[0].value), month: Number($("#month3")[0].value)})+"</span>");
+			});
+			$("#month4").each(function(){
+				$(this).after("<span>Date valid: "+$(this).isDateValid({year: Number($("#year4")[0].value), month: Number($("#month4")[0].value)})+"</span>");
+			});
+			$("#year5").each(function(){
+				$(this).after("<span>Date valid: "+$(this).isDateValid({year: Number($("#year5")[0].value)})+"</span>");
+			});
+			$("#year6").each(function(){
+				$(this).after("<span>Date valid: "+$(this).isDateValid({year: Number($("#year6")[0].value)})+"</span>");
+			});
 		</script>
 	</body>
 </html>

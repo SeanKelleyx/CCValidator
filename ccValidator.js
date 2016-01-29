@@ -306,7 +306,7 @@
 		return false;
 	};
 
-	$.fn.isDateValid = function(opts){
+	$.isDateValid = function(opts){
 		var defaults = {
 			year: undefined,
 			month: undefined,

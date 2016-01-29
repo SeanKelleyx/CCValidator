@@ -180,22 +180,22 @@
 				$(this).removeClass("valid").addClass("error");
 			}});
 			$("#day1").each(function(){
-				$(this).after("<span>Date valid: "+$(this).isDateValid({year: Number($("#year1")[0].value), month: Number($("#month1")[0].value), day: Number($("#day1")[0].value)})+"</span>");
+				$(this).after("<span>Date valid: "+$.isDateValid({year: Number($("#year1")[0].value), month: Number($("#month1")[0].value), day: Number($("#day1")[0].value)})+"</span>");
 			});
 			$("#day2").each(function(){
-				$(this).after("<span>Date valid: "+$(this).isDateValid({year: Number($("#year2")[0].value), month: Number($("#month2")[0].value), day: Number($("#day2")[0].value)})+"</span>");
+				$(this).after("<span>Date valid: "+$.isDateValid({year: Number($("#year2")[0].value), month: Number($("#month2")[0].value), day: Number($("#day2")[0].value)})+"</span>");
 			});
 			$("#month3").each(function(){
-				$(this).after("<span>Date valid: "+$(this).isDateValid({year: Number($("#year3")[0].value), month: Number($("#month3")[0].value)})+"</span>");
+				$(this).after("<span>Date valid: "+$.isDateValid({year: Number($("#year3")[0].value), month: Number($("#month3")[0].value)})+"</span>");
 			});
 			$("#month4").each(function(){
-				$(this).after("<span>Date valid: "+$(this).isDateValid({year: Number($("#year4")[0].value), month: Number($("#month4")[0].value)})+"</span>");
+				$(this).after("<span>Date valid: "+$.isDateValid({year: Number($("#year4")[0].value), month: Number($("#month4")[0].value)})+"</span>");
 			});
 			$("#year5").each(function(){
-				$(this).after("<span>Date valid: "+$(this).isDateValid({year: Number($("#year5")[0].value)})+"</span>");
+				$(this).after("<span>Date valid: "+$.isDateValid({year: Number($("#year5")[0].value)})+"</span>");
 			});
 			$("#year6").each(function(){
-				$(this).after("<span>Date valid: "+$(this).isDateValid({year: Number($("#year6")[0].value)})+"</span>");
+				$(this).after("<span>Date valid: "+$.isDateValid({year: Number($("#year6")[0].value)})+"</span>");
 			});
 		</script>
 	</body>

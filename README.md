@@ -5,15 +5,17 @@ This validator checks if there are enough digits in the number and if the number
 
 Usage
 -----
-`validCC()` called on the input for the credit card number. It checks for a numeric input, checks for a valid credit card type (based on the input value), a valid credit card length for the type, and ensures that the number passes the Luhn algorithm. Accepts options: on, success, failure, acceptedCards.  
+`validCC()` called on the input for the credit card number. Returns `true`/`false`. It checks for a numeric input, checks for a valid credit card type (based on the input value), a valid credit card length for the type, and ensures that the number passes the Luhn algorithm. Accepts options: on, success, failure, acceptedCards.  
 
-`validLength()` called on the input for the credit card number. Checks the given credit card number for an acceptable length. Accepts options: acceptedCards.  
+`validLength()` called on the input for the credit card number. Returns `true`/`false`. Checks the given credit card number for an acceptable length. Accepts options: acceptedCards.  
 
-`getCardType()` called on the input for the credit card number. Returns the string value of the credit card type (see acceptedCards option) or 'unknown' for not found. Accepts no options.  
+`getCardType()` called on the input for the credit card number. Returns the `String` value of the credit card type (see acceptedCards option) or 'unknown' for not found. Accepts no options.  
 
-`luhnCheck()` called on te input for the credit card number. Returns true/false if the card number passes the Luhn Algorithm. Accepts no options.
+`luhnCheck()` called on te input for the credit card number. Returns `true`/`false` if the card number passes the Luhn Algorithm. Accepts no options.
 
-`validCvv()` called on the input for the cvv number. Returns true/false if the ccv is valid length. Accepts options: cardType or cardInput. 
+`validCvv()` called on the input for the cvv number. Returns `true`/`false` if the ccv is valid length. Accepts options: cardType or cardInput. 
+
+`isDateValid()` called on jquery. Returns `true`/`false` if the date is in the future. Accepts options: year `Number`, month `Number`, day `Number`.
 
 
 Options
@@ -53,6 +55,16 @@ Pass in to validCvv() to validate the card specific CVV length.
 
 **cardInput** - element - defaults to empty string
 Pass in to validCvv() to validate the card specific CVV length based on the card number value of the input.
+
+**year** - number - defaults to undefined
+Pass in to isDateValid() to validate the year is current or in the future.
+
+**month** - number - defaults to undefined
+Pass in to isDateValid() to validate the year/month is current or in the future. Only valid when used with year.
+
+**day** - number - defaults to undefined
+Pass in to isDateValid() to validate the year/month/day is current or in the future. Only valid when used with year and month.
+
 
 jQuery versions
 ---------------
